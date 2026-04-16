@@ -1,0 +1,19 @@
+[Unit]
+Description=Mirror Claude Code latest-channel releases into the HKSW Homebrew tap
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=__ENV_FILE__
+
+[Service]
+Type=oneshot
+User=__RUN_USER__
+Group=__RUN_GROUP__
+WorkingDirectory=__REPO_ROOT__
+Environment=HOME=__RUN_HOME__
+EnvironmentFile=__ENV_FILE__
+Environment=PYTHON3=__PYTHON3__
+ExecStartPre=+/usr/bin/chown -R __RUN_USER__:__RUN_GROUP__ __REPO_ROOT__
+ExecStart=__REPO_ROOT__/scripts/run_update.sh
+NoNewPrivileges=yes
+RestrictSUIDSGID=yes
+UMask=0077
