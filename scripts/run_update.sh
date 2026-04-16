@@ -3,8 +3,8 @@
 set -eu
 
 repo_root="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
-default_env_file="${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-cask.env"
-env_file="${CLAUDE_CODE_CASK_ENV_FILE:-}"
+default_env_file="${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-tap.env"
+env_file="${CLAUDE_CODE_TAP_ENV_FILE:-}"
 
 if [ "${1:-}" = "--env-file" ]; then
     if [ $# -lt 2 ]; then
@@ -36,4 +36,4 @@ if [ -z "$python3_bin" ]; then
     exit 1
 fi
 
-exec "$python3_bin" "$repo_root/scripts/update_claude_code_cask.py" "$@"
+exec "$python3_bin" "$repo_root/scripts/update_claude_code_tap.py" "$@"

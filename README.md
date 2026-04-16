@@ -1,4 +1,4 @@
-# Claude Code Cask Tap
+# Homebrew Tap for Claude Code
 
 Community-maintained Homebrew tap that tracks Anthropic's latest Claude Code channel.
 
@@ -10,18 +10,18 @@ This intentionally differs from the official naming:
 
 - `brew install --cask claude-code` from Homebrew installs the official stable cask
 - `brew install --cask claude-code@latest` from Homebrew installs Anthropic's official latest-channel cask
-- `brew install --cask hksw-io/claude-code-cask/claude-code` installs this tap's latest-channel mirror
+- `brew install --cask hksw-io/claude-code/claude-code` installs this tap's latest-channel mirror
 
 ## Install
 
 ```sh
-brew install --cask hksw-io/claude-code-cask/claude-code
+brew install --cask hksw-io/claude-code/claude-code
 ```
 
 Upgrade:
 
 ```sh
-brew upgrade --cask hksw-io/claude-code-cask/claude-code
+brew upgrade --cask hksw-io/claude-code/claude-code
 ```
 
 If you want plain `brew upgrade` to include casks that update outside Homebrew/core, set:
@@ -57,7 +57,7 @@ This tap polls:
 Each newly observed version:
 
 - creates a matching git tag such as `v2.1.111`
-- creates a GitHub Release in `hksw-io/claude-code-cask`
+- creates a GitHub Release in `hksw-io/homebrew-claude-code`
 - updates `Casks/claude-code.rb` only if that version outranks the current active version
 
 ## Run It Yourself
@@ -65,22 +65,22 @@ Each newly observed version:
 Clone the repo wherever you want to run the mirror:
 
 ```sh
-git clone https://github.com/hksw-io/claude-code-cask.git
-cd claude-code-cask
+git clone https://github.com/hksw-io/homebrew-claude-code.git
+cd homebrew-claude-code
 ```
 
-Create an environment file. The default location is `${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-cask.env`, but every helper script also accepts an explicit path:
+Create an environment file. The default location is `${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-tap.env`, but every helper script also accepts an explicit path:
 
 ```sh
 mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}"
-cat > "${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-cask.env" <<'EOF'
+cat > "${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-tap.env" <<'EOF'
 GH_TOKEN=...
-TAP_REPO=hksw-io/claude-code-cask
+TAP_REPO=hksw-io/homebrew-claude-code
 GIT_BRANCH=main
 GIT_USER_NAME="Your Name"
 GIT_USER_EMAIL="you@example.com"
 EOF
-chmod 600 "${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-cask.env"
+chmod 600 "${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-tap.env"
 ```
 
 Run the updater once:
@@ -98,21 +98,21 @@ python3 -m unittest discover -s tests -v
 Automate it on Linux with `systemd`:
 
 ```sh
-sudo ./scripts/install_systemd_units.sh "${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-cask.env"
-systemctl status claude-code-cask-sync.timer
-systemctl list-timers claude-code-cask-sync.timer
+sudo ./scripts/install_systemd_units.sh "${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-tap.env"
+systemctl status claude-code-tap-sync.timer
+systemctl list-timers claude-code-tap-sync.timer
 ```
 
 Automate it on macOS with `launchd`:
 
 ```sh
-./scripts/install_launchd_agent.sh "${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-cask.env"
-launchctl print "gui/$(id -u)/io.hksw.claude-code-cask-sync"
+./scripts/install_launchd_agent.sh "${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-tap.env"
+launchctl print "gui/$(id -u)/io.hksw.claude-code-tap-sync"
 ```
 
 Notes:
 
-- The helper scripts render the scheduler config with your actual clone path, so you do not need to use `/srv/claude-code-cask`.
-- `GH_TOKEN` needs permission to create releases and push tags/commits in `hksw-io/claude-code-cask`.
+- The helper scripts render the scheduler config with your actual clone path, so you do not need to use `/srv/homebrew-claude-code`.
+- `GH_TOKEN` needs permission to create releases and push tags/commits in `hksw-io/homebrew-claude-code`.
 - Set `GIT_USER_NAME` and `GIT_USER_EMAIL` if you want mirrored commits to use a specific identity. If unset, the updater falls back to the repo's local git config.
-- The Linux installer defaults to running the timer as the invoking user. Override `CLAUDE_CODE_CASK_USER`, `CLAUDE_CODE_CASK_GROUP`, or `CLAUDE_CODE_CASK_HOME` if you want a dedicated service account.
+- The Linux installer defaults to running the timer as the invoking user. Override `CLAUDE_CODE_TAP_USER`, `CLAUDE_CODE_TAP_GROUP`, or `CLAUDE_CODE_TAP_HOME` if you want a dedicated service account.

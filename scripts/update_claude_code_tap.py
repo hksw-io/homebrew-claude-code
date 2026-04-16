@@ -17,7 +17,7 @@ from typing import Any
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-TAP_REPO = os.environ.get("TAP_REPO", "hksw-io/claude-code-cask")
+TAP_REPO = os.environ.get("TAP_REPO", "hksw-io/homebrew-claude-code")
 GIT_BRANCH = os.environ.get("GIT_BRANCH", "main")
 GH_TOKEN = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
 GIT_USER_NAME = os.environ.get("GIT_USER_NAME")
@@ -104,7 +104,7 @@ def http_request_json(url: str) -> Any:
 
 
 def http_request_text(url: str) -> str:
-    headers = {"User-Agent": "hksw-io-claude-code-cask-updater"}
+    headers = {"User-Agent": "hksw-io-homebrew-claude-code-updater"}
     last_error: Exception | None = None
     for attempt in range(5):
         request = urllib.request.Request(url, headers=headers)
@@ -131,7 +131,7 @@ def api_request(path: str, token: str | None, method: str = "GET", data: dict[st
     headers = {
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "hksw-io-claude-code-cask-updater",
+        "User-Agent": "hksw-io-homebrew-claude-code-updater",
     }
     if token:
         headers["Authorization"] = f"Bearer {token}"

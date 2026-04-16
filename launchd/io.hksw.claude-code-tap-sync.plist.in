@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>io.hksw.claude-code-cask-sync</string>
+  <string>io.hksw.claude-code-tap-sync</string>
   <key>ProgramArguments</key>
   <array>
     <string>__REPO_ROOT__/scripts/run_update.sh</string>
@@ -12,7 +12,7 @@
   <string>__REPO_ROOT__</string>
   <key>EnvironmentVariables</key>
   <dict>
-    <key>CLAUDE_CODE_CASK_ENV_FILE</key>
+    <key>CLAUDE_CODE_TAP_ENV_FILE</key>
     <string>__ENV_FILE__</string>
     <key>PYTHON3</key>
     <string>__PYTHON3__</string>

@@ -1,5 +1,5 @@
 [Unit]
-Description=Mirror Claude Code latest-channel releases into the HKSW Homebrew tap
+Description=Mirror Claude Code releases into the HKSW Homebrew tap
 After=network-online.target
 Wants=network-online.target
 ConditionPathExists=__ENV_FILE__

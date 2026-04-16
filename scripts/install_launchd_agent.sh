@@ -8,13 +8,13 @@ if [ "$(uname -s)" != "Darwin" ]; then
 fi
 
 repo_root="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
-template="$repo_root/launchd/io.hksw.claude-code-cask-sync.plist.in"
-env_file="${1:-${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-cask.env}"
+template="$repo_root/launchd/io.hksw.claude-code-tap-sync.plist.in"
+env_file="${1:-${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-tap.env}"
 python3_bin="${PYTHON3:-$(command -v python3)}"
 launch_agents_dir="$HOME/Library/LaunchAgents"
 logs_dir="$HOME/Library/Logs"
-plist_path="$launch_agents_dir/io.hksw.claude-code-cask-sync.plist"
-log_file="$logs_dir/io.hksw.claude-code-cask-sync.log"
+plist_path="$launch_agents_dir/io.hksw.claude-code-tap-sync.plist"
+log_file="$logs_dir/io.hksw.claude-code-tap-sync.log"
 
 if [ ! -f "$env_file" ]; then
     echo "error: environment file not found: $env_file" >&2
@@ -49,7 +49,7 @@ sed \
 
 launchctl bootout "gui/$(id -u)" "$plist_path" >/dev/null 2>&1 || true
 launchctl bootstrap "gui/$(id -u)" "$plist_path"
-launchctl enable "gui/$(id -u)/io.hksw.claude-code-cask-sync"
-launchctl kickstart -k "gui/$(id -u)/io.hksw.claude-code-cask-sync"
+launchctl enable "gui/$(id -u)/io.hksw.claude-code-tap-sync"
+launchctl kickstart -k "gui/$(id -u)/io.hksw.claude-code-tap-sync"
 
-printf '%s\n' "Installed io.hksw.claude-code-cask-sync via launchd using $env_file"
+printf '%s\n' "Installed io.hksw.claude-code-tap-sync via launchd using $env_file"

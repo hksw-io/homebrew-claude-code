@@ -3,9 +3,9 @@
 set -eu
 
 repo_root="$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)"
-template="$repo_root/systemd/claude-code-cask-sync.service.in"
-timer_template="$repo_root/systemd/claude-code-cask-sync.timer"
-env_file="${1:-${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-cask.env}"
+template="$repo_root/systemd/claude-code-tap-sync.service.in"
+timer_template="$repo_root/systemd/claude-code-tap-sync.timer"
+env_file="${1:-${XDG_CONFIG_HOME:-$HOME/.config}/claude-code-tap.env}"
 
 if [ "$(id -u)" -ne 0 ]; then
     echo "error: install_systemd_units.sh must run as root" >&2
@@ -18,9 +18,9 @@ if [ ! -f "$env_file" ]; then
 fi
 
 python3_bin="${PYTHON3:-$(command -v python3)}"
-run_user="${CLAUDE_CODE_CASK_USER:-${SUDO_USER:-$(id -un)}}"
-run_group="${CLAUDE_CODE_CASK_GROUP:-$(id -gn "$run_user")}"
-run_home="${CLAUDE_CODE_CASK_HOME:-}"
+run_user="${CLAUDE_CODE_TAP_USER:-${SUDO_USER:-$(id -un)}}"
+run_group="${CLAUDE_CODE_TAP_GROUP:-$(id -gn "$run_user")}"
+run_home="${CLAUDE_CODE_TAP_HOME:-}"
 
 if [ -z "$run_home" ]; then
     if command -v getent >/dev/null 2>&1; then
@@ -56,10 +56,10 @@ sed \
     -e "s|__RUN_USER__|$run_user_escaped|g" \
     -e "s|__RUN_GROUP__|$run_group_escaped|g" \
     -e "s|__RUN_HOME__|$run_home_escaped|g" \
-    "$template" > /etc/systemd/system/claude-code-cask-sync.service
-install -m 0644 "$timer_template" /etc/systemd/system/claude-code-cask-sync.timer
+    "$template" > /etc/systemd/system/claude-code-tap-sync.service
+install -m 0644 "$timer_template" /etc/systemd/system/claude-code-tap-sync.timer
 
 systemctl daemon-reload
-systemctl enable --now claude-code-cask-sync.timer
+systemctl enable --now claude-code-tap-sync.timer
 
-printf '%s\n' "Installed claude-code-cask-sync.timer for $run_user using $env_file"
+printf '%s\n' "Installed claude-code-tap-sync.timer for $run_user using $env_file"

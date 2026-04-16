@@ -8,7 +8,7 @@ from unittest import mock
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-import update_claude_code_cask as updater  # noqa: E402
+import update_claude_code_tap as updater  # noqa: E402
 
 
 class ReleaseParsingTests(unittest.TestCase):
@@ -75,7 +75,7 @@ class ReleaseParsingTests(unittest.TestCase):
     def test_push_remote_url_does_not_embed_credentials(self) -> None:
         self.assertEqual(
             updater.push_remote_url(),
-            "https://github.com/hksw-io/claude-code-cask.git",
+            "https://github.com/hksw-io/homebrew-claude-code.git",
         )
 
     def test_resolve_git_identity_prefers_environment(self) -> None:
