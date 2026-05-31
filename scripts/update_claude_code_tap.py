@@ -24,7 +24,7 @@ GIT_USER_NAME = os.environ.get("GIT_USER_NAME")
 GIT_USER_EMAIL = os.environ.get("GIT_USER_EMAIL")
 API_BASE = "https://api.github.com"
 RELEASES_BASE_URL = (
-    "https://storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases"
+    "https://downloads.claude.ai/claude-code-releases"
 )
 LATEST_MARKER_URL = f"{RELEASES_BASE_URL}/latest"
 REQUIRED_ASSETS = {
@@ -260,10 +260,10 @@ def render_cask(release: ReleaseInfo) -> str:
          x86_64_linux: "{release.sha256["x86_64_linux"]}"
 
   url "{RELEASES_BASE_URL}/#{{version}}/#{{os}}-#{{arch}}/claude",
-      verified: "storage.googleapis.com/claude-code-dist-86c565f3-f756-42ad-8dfa-d59b1c096819/claude-code-releases/"
+      verified: "downloads.claude.ai/claude-code-releases/"
   name "Claude Code"
   desc "Terminal-based AI coding assistant"
-  homepage "https://www.anthropic.com/claude-code"
+  homepage "https://claude.com/product/claude-code"
 
   livecheck do
     url "{LATEST_MARKER_URL}"
