@@ -256,8 +256,8 @@ def render_cask(release: ReleaseInfo) -> str:
   version "{release.version}"
   sha256 arm:          "{release.sha256["arm"]}",
          x86_64:       "{release.sha256["x86_64"]}",
-         arm64_linux:  "{release.sha256["arm64_linux"]}",
-         x86_64_linux: "{release.sha256["x86_64_linux"]}"
+         x86_64_linux: "{release.sha256["x86_64_linux"]}",
+         arm64_linux:  "{release.sha256["arm64_linux"]}"
 
   url "{RELEASES_BASE_URL}/#{{version}}/#{{os}}-#{{arch}}/claude",
       verified: "downloads.claude.ai/claude-code-releases/"
