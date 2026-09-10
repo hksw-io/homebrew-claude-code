@@ -8,8 +8,7 @@ cask "claude-code" do
          x86_64_linux: "19842705e989393fce936804df6d2ab034860e24b8f8880357981d87ffd83fac",
          arm64_linux:  "6e44c5d3c97efaa1ee35ab8dd875a907681707e5cc4f6ca0da3d13a917bbcedb"
 
-  url "https://downloads.claude.ai/claude-code-releases/#{version}/#{os}-#{arch}/claude",
-      verified: "downloads.claude.ai/claude-code-releases/"
+  url "https://downloads.claude.ai/claude-code-releases/#{version}/#{os}-#{arch}/claude"
   name "Claude Code"
   desc "Terminal-based AI coding assistant"
   homepage "https://claude.com/product/claude-code"

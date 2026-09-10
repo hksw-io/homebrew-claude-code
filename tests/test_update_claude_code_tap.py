@@ -57,7 +57,7 @@ class ReleaseParsingTests(unittest.TestCase):
         self.assertIn('cask "claude-code"', content)
         self.assertIn("/claude-code-releases/#{version}/#{os}-#{arch}/claude", content)
         self.assertIn('/claude-code-releases/latest"', content)
-        self.assertIn('verified: "downloads.claude.ai/claude-code-releases/"', content)
+        self.assertNotIn("verified:", content)
         self.assertIn('homepage "https://claude.com/product/claude-code"', content)
         self.assertNotIn("stable", content)
 

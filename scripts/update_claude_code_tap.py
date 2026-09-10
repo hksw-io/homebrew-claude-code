@@ -259,8 +259,7 @@ def render_cask(release: ReleaseInfo) -> str:
          x86_64_linux: "{release.sha256["x86_64_linux"]}",
          arm64_linux:  "{release.sha256["arm64_linux"]}"
 
-  url "{RELEASES_BASE_URL}/#{{version}}/#{{os}}-#{{arch}}/claude",
-      verified: "downloads.claude.ai/claude-code-releases/"
+  url "{RELEASES_BASE_URL}/#{{version}}/#{{os}}-#{{arch}}/claude"
   name "Claude Code"
   desc "Terminal-based AI coding assistant"
   homepage "https://claude.com/product/claude-code"
