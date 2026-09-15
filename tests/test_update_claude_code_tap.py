@@ -124,6 +124,25 @@ class ReleaseParsingTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "Repository is not writable by the current user"):
                 updater.ensure_repo_writable()
 
+    def test_prepare_repository_dry_run_skips_git_mutations(self) -> None:
+        with mock.patch.object(updater, "ensure_repo_writable") as ensure_writable:
+            with mock.patch.object(updater, "ensure_clean_worktree") as ensure_clean:
+                with mock.patch.object(updater, "configure_repo") as configure:
+                    updater.prepare_repository(dry_run=True, verbose=False)
+
+        ensure_writable.assert_not_called()
+        ensure_clean.assert_not_called()
+        configure.assert_not_called()
+
+    def test_prepare_repository_refreshes_normal_runs_safely(self) -> None:
+        calls: list[str] = []
+        with mock.patch.object(updater, "ensure_repo_writable", side_effect=lambda: calls.append("writable")):
+            with mock.patch.object(updater, "ensure_clean_worktree", side_effect=lambda: calls.append("clean")):
+                with mock.patch.object(updater, "configure_repo", side_effect=lambda verbose: calls.append("refresh")):
+                    updater.prepare_repository(dry_run=False, verbose=False)
+
+        self.assertEqual(calls, ["writable", "clean", "refresh", "clean"])
+
 
 if __name__ == "__main__":
     unittest.main()

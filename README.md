@@ -89,6 +89,8 @@ Run the updater once:
 ./scripts/run_update.sh --dry-run --verbose
 ```
 
+Dry runs read the local checkout and upstream metadata without refreshing or modifying the Git repository.
+
 Run the tests:
 
 ```sh

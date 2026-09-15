@@ -349,6 +349,17 @@ def configure_repo(verbose: bool) -> None:
     git("pull", "--ff-only", "origin", GIT_BRANCH)
 
 
+def prepare_repository(dry_run: bool, verbose: bool) -> None:
+    if dry_run:
+        debug(verbose, "Dry run: skipping Git repository refresh.")
+        return
+
+    ensure_repo_writable()
+    ensure_clean_worktree()
+    configure_repo(verbose)
+    ensure_clean_worktree()
+
+
 def existing_upstream_tags() -> set[str]:
     output = git("tag", "--list", "v*").stdout
     return {line.strip() for line in output.splitlines() if line.strip()}
@@ -428,9 +439,7 @@ def create_github_release(release: ReleaseInfo, token: str, active_version: str,
 
 
 def sync_releases(dry_run: bool, verbose: bool) -> int:
-    ensure_repo_writable()
-    configure_repo(verbose)
-    ensure_clean_worktree()
+    prepare_repository(dry_run, verbose)
 
     tags = existing_upstream_tags()
     active_version = read_active_cask_version()
