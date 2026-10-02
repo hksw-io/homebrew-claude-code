@@ -87,6 +87,7 @@ def git(
         text=True,
         capture_output=capture_output,
         env=process_env,
+        timeout=120,
     )
 
 
@@ -109,7 +110,7 @@ def http_request_text(url: str) -> str:
     for attempt in range(5):
         request = urllib.request.Request(url, headers=headers)
         try:
-            with urllib.request.urlopen(request) as response:
+            with urllib.request.urlopen(request, timeout=30) as response:
                 return response.read().decode("utf-8")
         except urllib.error.HTTPError as exc:
             if exc.code in (403, 408, 429, 500, 502, 503, 504):
@@ -119,7 +120,7 @@ def http_request_text(url: str) -> str:
                 continue
             details = exc.read().decode("utf-8", errors="replace")
             raise RuntimeError(f"HTTP request failed: {exc.code} {url}: {details}") from exc
-        except urllib.error.URLError as exc:
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
             delay = max(1, 2**attempt)
             time.sleep(delay)
             last_error = exc
@@ -145,7 +146,7 @@ def api_request(path: str, token: str | None, method: str = "GET", data: dict[st
     for attempt in range(5):
         request = urllib.request.Request(f"{API_BASE}{path}", headers=headers, method=method, data=body)
         try:
-            with urllib.request.urlopen(request) as response:
+            with urllib.request.urlopen(request, timeout=30) as response:
                 payload = response.read()
         except urllib.error.HTTPError as exc:
             if exc.code == 422 and path.startswith(f"/repos/{TAP_REPO}/releases"):
@@ -157,6 +158,10 @@ def api_request(path: str, token: str | None, method: str = "GET", data: dict[st
                 continue
             details = exc.read().decode("utf-8", errors="replace")
             raise RuntimeError(f"GitHub API request failed: {exc.code} {path}: {details}") from exc
+        except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
+            time.sleep(max(1, 2**attempt))
+            last_error = exc
+            continue
         else:
             if not payload:
                 return None

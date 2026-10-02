@@ -6,6 +6,7 @@ ConditionPathExists=__ENV_FILE__
 
 [Service]
 Type=oneshot
+TimeoutStartSec=4min
 User=__RUN_USER__
 Group=__RUN_GROUP__
 WorkingDirectory=__REPO_ROOT__

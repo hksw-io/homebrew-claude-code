@@ -12,6 +12,15 @@ import update_claude_code_tap as updater  # noqa: E402
 
 
 class ReleaseParsingTests(unittest.TestCase):
+    def test_download_timeout_is_retried_with_bounded_requests(self) -> None:
+        response = mock.MagicMock()
+        response.__enter__.return_value.read.return_value = b"2.1.287"
+        with mock.patch.object(updater.urllib.request, "urlopen", side_effect=[TimeoutError(), response]) as request:
+            with mock.patch.object(updater.time, "sleep"):
+                self.assertEqual(updater.http_request_text(updater.LATEST_MARKER_URL), "2.1.287")
+        self.assertEqual(request.call_count, 2)
+        self.assertTrue(all(call.kwargs["timeout"] == 30 for call in request.call_args_list))
+
     def make_manifest(self, *, version: str) -> dict:
         platforms = {}
         checksum_chars = iter(["a", "b", "c", "d"])
