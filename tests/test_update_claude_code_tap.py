@@ -69,6 +69,9 @@ class ReleaseParsingTests(unittest.TestCase):
         self.assertNotIn("verified:", content)
         self.assertIn('homepage "https://claude.com/product/claude-code"', content)
         self.assertNotIn("stable", content)
+        self.assertIn('intel:        "', content)
+        self.assertNotIn("x86_64:", content)
+        self.assertIn('conflicts_with cask: "claude-code@latest"', content)
 
     def test_select_release_for_sync_returns_none_when_tag_already_exists(self) -> None:
         release = updater.release_from_manifest("2.1.111", self.make_manifest(version="2.1.111"))

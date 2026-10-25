@@ -260,9 +260,9 @@ def render_cask(release: ReleaseInfo) -> str:
 
   version "{release.version}"
   sha256 arm:          "{release.sha256["arm"]}",
-         x86_64:       "{release.sha256["x86_64"]}",
-         x86_64_linux: "{release.sha256["x86_64_linux"]}",
-         arm64_linux:  "{release.sha256["arm64_linux"]}"
+         intel:        "{release.sha256["x86_64"]}",
+         arm64_linux:  "{release.sha256["arm64_linux"]}",
+         x86_64_linux: "{release.sha256["x86_64_linux"]}"
 
   url "{RELEASES_BASE_URL}/#{{version}}/#{{os}}-#{{arch}}/claude"
   name "Claude Code"
@@ -273,6 +273,8 @@ def render_cask(release: ReleaseInfo) -> str:
     url "{LATEST_MARKER_URL}"
     regex(/^v?(\\d+(?:\\.\\d+)+)$/i)
   end
+
+  conflicts_with cask: "claude-code@latest"
 
   binary "claude"
 
